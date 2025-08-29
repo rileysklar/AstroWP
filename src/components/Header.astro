@@ -1,0 +1,100 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import MobileMenu from "./MobileMenu.astro";
+import { navQuery } from "../lib/api";
+
+// Fetch navigation data with error handling
+let navData;
+try {
+    navData = await navQuery();
+} catch (error) {
+    console.error('Error fetching navigation data:', error);
+    navData = { 
+        menus: { nodes: [] }, 
+        generalSettings: { title: 'Site', description: '' } 
+    };
+}
+
+const { menus, generalSettings } = navData;
+const primaryMenu = menus?.nodes?.[0] || null;
+---
+
+<header class="sticky relative top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div class="container mx-auto px-4">
+        <div class="flex h-16 items-center justify-between">
+            <!-- Logo/Site Title -->
+            <div class="flex items-center space-x-4">
+                <a href="/" class="flex items-center space-x-2">
+                    <div class="rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5Z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl text-foreground">
+                        {generalSettings?.title || 'AstroWP'}
+                    </span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors">
+                    Home
+                </a>
+                <a href="/posts" class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors">
+                    Posts
+                </a>
+                <a href="/events" class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors">
+                    Events
+                </a>
+                {primaryMenu && primaryMenu.menuItems?.nodes?.map((item) => (
+                    <a
+                        href={item.url}
+                        class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
+                    >
+                        {item.label}
+                    </a>
+                ))}
+            </nav>
+
+            <!-- Right side actions -->
+            <div class="flex items-center space-x-4">
+                <!-- Theme Toggle -->
+                <ThemeToggle />
+                
+                <!-- Mobile menu button -->
+                <button
+                    id="mobile-menu-button"
+                    class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                    aria-label="Open menu"
+                >
+                    <svg
+                        class="h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <line x1="4" x2="20" y1="12" y2="12"/>
+                        <line x1="4" x2="20" y1="6" y2="6"/>
+                        <line x1="4" x2="20" y1="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Include Mobile Menu Component -->
+<MobileMenu />
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,44 @@
+---
+alwaysApply: true
+---
+
+# Senior Software Engineer Playbook
+
+## Core Principles
+
+### Seek First to Understand
+
+- **Read before writing**: Always examine existing code patterns and architecture before implementing
+- **Question assumptions**: Ask "why" before "how" - understand the problem deeply
+- **Context matters**: Consider the broader system impact of any change
+
+### IMPORTANT: BE DRY - LOOK FOR REDUNDANCY AND BE DRY - DO NOT REPEAT YOURSELF
+
+- **Extract common patterns**: Create reusable utilities, components, and abstractions
+- **Single source of truth**: Centralize configuration, types, and business logic
+- **Refactor ruthlessly**: Eliminate duplication when you see it the third time
+- **ACTIVELY HUNT REDUNDANCY**: Before writing new code, search for existing implementations
+- **CONSOLIDATE IMMEDIATELY**: When you spot duplication, refactor it on the spot
+
+### Code Quality Standards
+
+- **Self-documenting code**: Write code that explains itself through clear naming and structure
+- **Fail fast**: Use TypeScript strictly, validate inputs early, handle errors explicitly
+- **Progressive enhancement**: Build incrementally, test continuously
+
+### Problem-Solving Approach
+
+1. **Understand the requirement** completely
+2. **Explore existing solutions** in the codebase
+3. **Design before coding** - consider edge cases and scalability
+4. **Implement minimally** - start simple, evolve complexity
+5. **Test thoroughly** - cover happy path and edge cases
+6. **Document decisions** - explain the "why" not just the "what"
+
+### AI Agent Excellence
+
+- **Always think and focus** on what could be the fundamental root cause of an issue or challenge
+- **Continue to analyze context** as you work to ensure nothing is missed and no stone unturned
+- **Find ways to clean up code** so that you are DRY
+- **Respond with succinct and precise language** - don't write bloated code
+- **Write great self-documenting code** that explains itself

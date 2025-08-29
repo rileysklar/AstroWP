@@ -1,0 +1,41 @@
+---
+import Hero from "../components/sections/Hero.astro";
+import RecentPosts from "../components/sections/RecentPosts.astro";
+import RecentEvents from "../components/sections/RecentEvents.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+Astro.response.headers.set('Cache-Control','max-age=600, must-revalidate');
+
+---
+
+<MainLayout title="Home Page">
+    <main>
+        <Hero />
+        
+        <section class="py-16 bg-background dark:bg-background">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-foreground mb-4">Recent Posts</h2>
+                    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Stay updated with our latest news, insights, and announcements
+                    </p>
+                </div>
+                
+                <RecentPosts />
+            </div>
+        </section>
+        
+        <section class="py-16 bg-muted/50 dark:bg-muted/30">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-foreground mb-4">Upcoming Events</h2>
+                    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Join us for exciting events, workshops, and community gatherings
+                    </p>
+                </div>
+                
+                <RecentEvents />
+            </div>
+        </section>
+    </main>
+</MainLayout>

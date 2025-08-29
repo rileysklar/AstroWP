@@ -1,0 +1,62 @@
+---
+export const prerender = true;
+import MainLayout from "../layouts/MainLayout.astro";
+import Single from "../components/templates/Single.astro";
+import Archive from "../components/templates/Archive.astro";
+import { getNodeByURI, getAllUris } from "../lib/api";
+
+const uri = `/${Astro.params.uri}/`;
+let data;
+let node;
+
+try {
+    data = await getNodeByURI(uri);
+    node = data?.nodeByUri;
+    
+    if (!node) {
+        return Astro.redirect('/404');
+    }
+} catch (error) {
+    console.error('Error fetching node data:', error);
+    return Astro.redirect('/404');
+}
+
+export async function getStaticPaths(){
+    return await getAllUris();
+}
+
+function resolveContentTemplate(node){ 
+    let template;
+    switch(node.__typename){
+        case 'Post':
+            template = Single;
+            break; 
+        case 'Page':
+            template = Single;
+            break; 
+        case 'Event':
+            template = Single;
+            break;
+        case 'Category':
+            template = Archive;
+            break; 
+        case 'Tag':
+            template = Archive;
+            break; 
+        default: 
+            template = Single;
+    }
+
+    return template;
+}
+
+const Template = resolveContentTemplate(node)
+
+---
+
+<MainLayout 
+ title={ node.title || node.name}
+ description={ node.excerpt || node.content }
+>
+        <Template node={node}></Template>
+</MainLayout>

@@ -1,0 +1,105 @@
+---
+// Archive template for category/tag archive views
+export interface Props {
+    node: any;
+    posts: any[];
+}
+
+const { node, posts } = Astro.props;
+---
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+    <!-- Archive Header -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            {node.name}
+        </h1>
+        
+        {node.description && (
+            <p class="text-xl text-slate-600 dark:text-white/80 max-w-2xl mx-auto">
+                {node.description}
+            </p>
+        )}
+        
+        <div class="mt-4 text-sm text-slate-500 dark:text-white/60">
+            {posts.length} {posts.length === 1 ? 'post' : 'posts'} found
+        </div>
+    </header>
+
+    <!-- Posts Grid -->
+    {posts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post) => (
+                <article class="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    {post.featuredImage?.node?.sourceUrl && (
+                        <div class="aspect-video overflow-hidden">
+                            <img 
+                                src={post.featuredImage.node.sourceUrl} 
+                                alt={post.featuredImage.node.altText || post.title}
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                    )}
+                    
+                    <div class="p-6">
+                        <div class="mb-3">
+                            {post.categories?.nodes?.map((category) => (
+                                <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full mr-2 mb-2">
+                                    {category.name}
+                                </span>
+                            ))}
+                        </div>
+                        
+                        <h2 class="text-xl font-semibold text-foreground mb-3">
+                            <a href={`/post/${post.slug}`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                {post.title}
+                            </a>
+                        </h2>
+                        
+                        <p class="text-slate-600 dark:text-white/80 text-sm mb-4 line-clamp-3">
+                            {post.excerpt?.replace(/<[^>]*>/g, '') || 'No excerpt available'}
+                        </p>
+                        
+                        <div class="flex items-center justify-between text-sm text-slate-500 dark:text-white/60">
+                            <time datetime={post.date}>
+                                {new Date(post.date).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                })}
+                            </time>
+                            
+                            <a href={`/post/${post.slug}`} class="text-blue-600 dark:text-blue-400 hover:underline">
+                                Read more →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            ))}
+        </div>
+    ) : (
+        <div class="text-center py-16">
+            <div class="text-slate-400 dark:text-white/40 text-2xl mb-4">No posts found</div>
+            <p class="text-slate-600 dark:text-white/80 mb-8">
+                No posts found in this {node.taxonomyName === 'category' ? 'category' : 'tag'}.
+            </p>
+            <a href="/posts" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                View All Posts
+                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    )}
+
+    <!-- Back to Posts -->
+    <div class="text-center mt-12">
+        <a href="/posts" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">
+            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+            Back to All Posts
+        </a>
+    </div>
+</div>

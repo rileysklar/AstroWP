@@ -1,0 +1,82 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Single from "../../components/templates/Single.astro";
+import { getNodeByURI } from "../../lib/api";
+
+const { slug } = Astro.params;
+
+// Try to find the event by slug dynamically
+let data;
+let node;
+
+try {
+    // Try different URI patterns to find the event
+    const patterns = [
+        `/event/${slug}/`,
+        `/events/${slug}/`
+    ];
+    
+    for (const pattern of patterns) {
+        data = await getNodeByURI(pattern);
+        node = data?.nodeByUri;
+        if (node && node.__typename === 'Event') {
+            break;
+        }
+    }
+    
+    // If not found, try to get all events and find by slug
+    if (!node || node.__typename !== 'Event') {
+        const eventsResponse = await fetch(import.meta.env.WORDPRESS_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                query: `{
+                    events(first: 100) {
+                        nodes {
+                            id
+                            title
+                            slug
+                            uri
+                            date
+                            content
+                            featuredImage {
+                                node {
+                                    srcSet
+                                    sourceUrl
+                                    altText
+                                    mediaDetails {
+                                        height
+                                        width
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }`
+            })
+        });
+        
+        const eventsData = await eventsResponse.json();
+        const events = eventsData.data?.events?.nodes || [];
+        node = events.find(event => event.slug === slug);
+        
+        if (node) {
+            node.__typename = 'Event';
+        }
+    }
+    
+    if (!node || node.__typename !== 'Event') {
+        return Astro.redirect('/404');
+    }
+} catch (error) {
+    console.error('Error fetching event data:', error);
+    return Astro.redirect('/404');
+}
+---
+
+<MainLayout 
+    title={node.title}
+    description={node.content}
+>
+    <Single node={node} />
+</MainLayout>

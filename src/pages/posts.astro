@@ -1,0 +1,17 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import RecentPosts from "../components/sections/RecentPosts.astro";
+---
+
+<MainLayout title="All Posts" description="Browse all our blog posts and articles">
+    <div class="container mx-auto px-4 py-8 bg-background dark:bg-background min-h-screen">
+        <header class="mb-12 text-center">
+            <h1 class="text-3xl font-bold tracking-tight text-foreground mb-4">All Posts</h1>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Explore our complete collection of articles, insights, and updates
+            </p>
+        </header>
+        
+        <RecentPosts />
+    </div>
+</MainLayout>

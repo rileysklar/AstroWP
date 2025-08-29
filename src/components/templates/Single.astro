@@ -1,0 +1,100 @@
+---
+// Single template for individual posts and events
+export interface Props {
+    node: any;
+    type: 'Post' | 'Event' | 'Page';
+}
+
+const { node, type } = Astro.props;
+---
+
+<article class="max-w-4xl mx-auto px-6 py-12">
+    <!-- Header -->
+    <header class="mb-8">
+        <div class="mb-4">
+            {type === 'Post' && node.categories?.nodes?.length > 0 && (
+                <div class="flex items-center gap-2 mb-4">
+                    {node.categories.nodes.map((category) => (
+                        <a 
+                            href={category.uri} 
+                            class="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                        >
+                            {category.name}
+                        </a>
+                    ))}
+                </div>
+            )}
+            
+            {type === 'Event' && (
+                <span class="inline-block px-3 py-1 text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full mb-4">
+                    Event
+                </span>
+            )}
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
+            {node.title}
+        </h1>
+        
+        <div class="flex items-center gap-4 text-slate-600 dark:text-white/80 text-sm">
+            <time datetime={node.date}>
+                {new Date(node.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })}
+            </time>
+            
+            {type === 'Post' && node.commentCount > 0 && (
+                <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    {node.commentCount} comments
+                </span>
+            )}
+        </div>
+    </header>
+
+    <!-- Featured Image -->
+    {node.featuredImage?.node?.sourceUrl && (
+        <div class="mb-8">
+            <img 
+                src={node.featuredImage.node.sourceUrl} 
+                alt={node.featuredImage.node.altText || node.title}
+                class="w-full h-auto rounded-lg shadow-lg"
+                width={node.featuredImage.node.mediaDetails?.width || 800}
+                height={node.featuredImage.node.mediaDetails?.height || 600}
+            />
+        </div>
+    )}
+
+    <!-- Content -->
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+        <div set:html={node.content} />
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t border-border/40">
+        <div class="flex items-center justify-between">
+            <div class="text-sm text-slate-600 dark:text-white/80">
+                Published on {new Date(node.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a 
+                    href={`/${type.toLowerCase()}s`} 
+                    class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                    ← Back to {type === 'Post' ? 'Posts' : 'Events'}
+                </a>
+            </div>
+        </div>
+    </footer>
+</article>

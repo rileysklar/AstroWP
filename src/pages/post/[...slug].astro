@@ -1,0 +1,90 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Single from "../../components/templates/Single.astro";
+import { getNodeByURI } from "../../lib/api";
+
+const { slug } = Astro.params;
+
+// Try to find the post by slug dynamically
+let data;
+let node;
+
+try {
+    // Try different URI patterns to find the post
+    const patterns = [
+        `/${slug}/`,
+        `/post/${slug}/`,
+        `/posts/${slug}/`
+    ];
+    
+    for (const pattern of patterns) {
+        data = await getNodeByURI(pattern);
+        node = data?.nodeByUri;
+        if (node && node.__typename === 'Post') {
+            break;
+        }
+    }
+    
+    // If not found, try to get all posts and find by slug
+    if (!node || node.__typename !== 'Post') {
+        const postsResponse = await fetch(import.meta.env.WORDPRESS_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                query: `{
+                    posts(first: 100) {
+                        nodes {
+                            id
+                            title
+                            slug
+                            uri
+                            date
+                            excerpt
+                            content
+                            categories {
+                                nodes {
+                                    name
+                                    uri
+                                }
+                            }
+                            featuredImage {
+                                node {
+                                    srcSet
+                                    sourceUrl
+                                    altText
+                                    mediaDetails {
+                                        height
+                                        width
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }`
+            })
+        });
+        
+        const postsData = await postsResponse.json();
+        const posts = postsData.data?.posts?.nodes || [];
+        node = posts.find(post => post.slug === slug);
+        
+        if (node) {
+            node.__typename = 'Post';
+        }
+    }
+    
+    if (!node || node.__typename !== 'Post') {
+        return Astro.redirect('/404');
+    }
+} catch (error) {
+    console.error('Error fetching post data:', error);
+    return Astro.redirect('/404');
+}
+---
+
+<MainLayout 
+    title={node.title}
+    description={node.excerpt || node.content}
+>
+    <Single node={node} />
+</MainLayout>

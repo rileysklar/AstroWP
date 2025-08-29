@@ -1,0 +1,120 @@
+---
+import { Button } from "../ui/button";
+---
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-purple-950 dark:to-slate-950">
+    <!-- Animated background -->
+    <div class="absolute inset-0">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="relative -top-10 z-10 max-w-6xl mx-auto px-6 text-center">
+        <div class="mb-8">
+            <a href="https://github.com/rileysklar/AstroWP.git" target="_blank" class="inline-block px-4 py-2 bg-slate-900/10 dark:bg-black/10 backdrop-blur-sm border border-slate-900/20 dark:border-white/10 rounded-full text-slate-900 dark:text-white/80 text-sm font-medium mb-6">
+                🚀 Visit on GitHub
+            </a>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-8">
+            <span class="bg-gradient-to-r from-slate-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+                Astro WordPress
+            </span>
+            <br />
+            <span class="bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 dark:from-purple-200 dark:via-pink-200 dark:to-yellow-200 bg-clip-text text-transparent">
+                Starter
+            </span>
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-slate-700 dark:text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <a href="/events">
+                <Button 
+                    variant="default" 
+                    size="lg"
+                    className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-gray-100 font-semibold text-lg px-8 py-4 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+                >
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 2v4"/>
+                        <path d="M16 2v4"/>
+                        <rect width="18" height="18" x="3" y="4" rx="2"/>
+                        <path d="M3 10h18"/>
+                    </svg>
+                    Explore Events
+                </Button>
+            </a>
+            
+            <a href="/posts">
+                <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white dark:border-white/40 dark:text-white dark:hover:bg-white dark:hover:text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl backdrop-blur-sm transition-all duration-300 transform hover:scale-105"
+                >
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                        <line x1="16" x2="8" y1="13" y2="13"/>
+                        <line x1="16" x2="8" y1="17" y2="17"/>
+                        <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    Read Posts
+                </Button>
+            </a>
+        </div>
+        
+        <!-- Social Proof -->
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <p class="text-slate-600 dark:text-white/80 text-lg mb-4">Trusted by developers worldwide</p>
+                <div class="flex flex-wrap justify-center items-center gap-4">
+                    <!-- Avatar Stack -->
+                    <div class="flex -space-x-2">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face" 
+                             alt="Developer 1" 
+                             class="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" 
+                             alt="Developer 2" 
+                             class="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 shadow-lg">
+                        
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face" 
+                             alt="Developer 4" 
+                             class="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face" 
+                             alt="Developer 5" 
+                             class="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=60&h=60&fit=crop&crop=face" 
+                             alt="Developer 6" 
+                             class="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 shadow-lg">
+                    </div>
+                    <span class="text-slate-600 dark:text-white/80 font-medium">5+ developers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+</style>
