@@ -149,22 +149,212 @@ docker-compose logs     # View logs
 
 ## 🚀 Deployment
 
-### WordPress Backend
-Deploy to any WordPress hosting (WordPress.com, Kinsta, WP Engine, etc.)
+This project requires deploying two separate components:
+1. **WordPress Backend** - Your headless CMS
+2. **Astro Frontend** - Your static site
 
-### Astro Frontend
-Deploy to Netlify or Vercel:
+### WordPress Backend Deployment
 
+#### Option 1: Managed WordPress Hosting (Recommended)
+
+**Recommended Providers:**
+- **WordPress.com** (Business plan or higher)
+- **Kinsta**
+- **WP Engine**
+- **SiteGround**
+- **Bluehost**
+
+**Steps:**
+1. **Choose a hosting provider** with WordPress support
+2. **Install WordPress** on your hosting
+3. **Install Required Plugins**:
+   - WPGraphQL
+   - WPGraphQL for ACF
+   - Advanced Custom Fields
+   - Custom Post Type UI
+4. **Configure Custom Post Types** (same as local setup)
+5. **Update Environment Variables** in your Astro project
+
+#### Option 2: Self-Hosted WordPress
+
+**Using DigitalOcean, AWS, or similar:**
+1. **Set up a VPS** with LAMP/LEMP stack
+2. **Install WordPress** on your server
+3. **Install and configure plugins**
+4. **Set up SSL certificate** (Let's Encrypt)
+5. **Configure domain and DNS**
+
+### Astro Frontend Deployment
+
+#### Deploy to Netlify
+
+**Step 1: Prepare for Production**
 ```bash
-# Build for production
+# Update your .env file with production WordPress URL
+WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
+
+# Build the project
 npm run build
+```
 
-# Deploy to Netlify
+**Step 2: Deploy to Netlify**
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Deploy
 netlify deploy --prod --dir=dist
+```
 
-# Deploy to Vercel
+**Step 3: Configure Netlify**
+1. **Connect your repository** to Netlify
+2. **Set build settings**:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+3. **Set environment variables**:
+   - `WORDPRESS_API_URL`: Your WordPress GraphQL endpoint
+4. **Configure custom domain** (optional)
+
+**Netlify Configuration File** (`netlify.toml`):
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  WORDPRESS_API_URL = "https://your-wordpress-site.com/graphql"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+#### Deploy to Vercel
+
+**Step 1: Prepare for Production**
+```bash
+# Update your .env file
+WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
+
+# Build the project
+npm run build
+```
+
+**Step 2: Deploy to Vercel**
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
 vercel --prod
 ```
+
+**Step 3: Configure Vercel**
+1. **Connect your repository** to Vercel
+2. **Set environment variables** in Vercel dashboard:
+   - `WORDPRESS_API_URL`: Your WordPress GraphQL endpoint
+3. **Configure custom domain** (optional)
+
+**Vercel Configuration File** (`vercel.json`):
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "env": {
+    "WORDPRESS_API_URL": "https://your-wordpress-site.com/graphql"
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+### Environment Configuration
+
+#### Production Environment Variables
+
+Create a `.env.production` file:
+```env
+WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
+```
+
+#### Update Astro Configuration
+
+Update `astro.config.mjs` for production:
+```javascript
+import { defineConfig } from 'astro/config';
+import node from "@astrojs/node";
+import react from "@astrojs/react";
+import tailwind from "@astrojs/tailwind";
+
+export default defineConfig({
+  integrations: [react(), tailwind()],
+  output: 'static', // or 'server' for SSR
+  adapter: node({
+    mode: 'standalone'
+  }),
+  site: 'https://your-astro-site.com',
+  base: '/',
+});
+```
+
+### Domain and DNS Setup
+
+#### WordPress Backend
+1. **Point your domain** to your WordPress hosting
+2. **Set up SSL certificate** (usually automatic with managed hosting)
+3. **Test GraphQL endpoint**: `https://your-wordpress-site.com/graphql`
+
+#### Astro Frontend
+1. **Configure custom domain** in Netlify/Vercel
+2. **Update DNS records** to point to your hosting provider
+3. **Set up SSL certificate** (automatic with Netlify/Vercel)
+
+### Deployment Checklist
+
+#### Before Deployment
+- [ ] WordPress site is live and accessible
+- [ ] All required plugins are installed and activated
+- [ ] Custom post types are configured
+- [ ] GraphQL endpoint is working
+- [ ] Environment variables are set correctly
+- [ ] Astro site builds successfully locally
+
+#### After Deployment
+- [ ] Test all pages load correctly
+- [ ] Verify GraphQL queries work
+- [ ] Check custom post types display
+- [ ] Test dynamic routing
+- [ ] Verify images and assets load
+- [ ] Check mobile responsiveness
+
+### Cost Considerations
+
+#### WordPress Hosting
+- **Managed WordPress**: $10-50/month
+- **VPS Hosting**: $5-20/month + setup time
+- **WordPress.com**: $25/month (Business plan)
+
+#### Frontend Hosting
+- **Netlify**: Free tier available, $19/month for teams
+- **Vercel**: Free tier available, $20/month for pro
+- **Both offer**: Custom domains, SSL, CDN, analytics
+
+### Recommended Setup
+
+**For Small Projects:**
+- WordPress: WordPress.com Business ($25/month)
+- Frontend: Netlify Free tier
+- Total: ~$25/month
+
+**For Larger Projects:**
+- WordPress: Kinsta ($30/month)
+- Frontend: Vercel Pro ($20/month)
+- Total: ~$50/month
 
 ## 📚 Resources
 
