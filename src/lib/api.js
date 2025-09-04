@@ -75,16 +75,17 @@ export async function heroQuery() {
                         title
                         description
                     }
-                    # Hero content from WordPress options
-                    heroTitle: option(name: "hero_title")
-                    heroSubtitle: option(name: "hero_subtitle")
-                    heroDescription: option(name: "hero_description")
-                    heroPrimaryButtonText: option(name: "hero_primary_button_text")
-                    heroPrimaryButtonLink: option(name: "hero_primary_button_link")
-                    heroSecondaryButtonText: option(name: "hero_secondary_button_text")
-                    heroSecondaryButtonLink: option(name: "hero_secondary_button_link")
-                    heroShowSocialProof: option(name: "hero_show_social_proof")
-                    heroSocialProofText: option(name: "hero_social_proof_text")
+                    heroSettings {
+                        title
+                        subtitle
+                        description
+                        primaryButtonText
+                        primaryButtonLink
+                        secondaryButtonText
+                        secondaryButtonLink
+                        showSocialProof
+                        socialProofText
+                    }
                 }`
             })
         });
@@ -94,7 +95,21 @@ export async function heroQuery() {
         }
 
         const { data } = await response.json();
-        return data;
+        
+        // Map heroSettings to the expected format
+        const heroData = data.heroSettings || {};
+        return {
+            ...data,
+            heroTitle: heroData.title,
+            heroSubtitle: heroData.subtitle,
+            heroDescription: heroData.description,
+            heroPrimaryButtonText: heroData.primaryButtonText,
+            heroPrimaryButtonLink: heroData.primaryButtonLink,
+            heroSecondaryButtonText: heroData.secondaryButtonText,
+            heroSecondaryButtonLink: heroData.secondaryButtonLink,
+            heroShowSocialProof: heroData.showSocialProof,
+            heroSocialProofText: heroData.socialProofText
+        };
     } catch (error) {
         console.error('Error fetching hero data:', error);
         return {
