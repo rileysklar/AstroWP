@@ -27,13 +27,13 @@ This project is configured for deployment with:
 ### GitHub Secrets (for GitHub Actions)
 ```
 GCP_SA_KEY=your-service-account-key-json
-DB_NAME=your-database-name
-DB_USER=your-database-user
-DB_PASSWORD=your-database-password
-DB_HOST=your-cloud-sql-connection-string
+DB_NAME=wordpress
+DB_USER=root
+DB_PASSWORD=YourSecurePassword123!
+DB_HOST=astrowp-wordpress-db.astrowp-deployment:us-central1:astrowp-wordpress-db
 WP_HOME=https://your-frontend-domain.netlify.app
-WP_SITEURL=https://your-backend-service.run.app
-WORDPRESS_API_URL=https://your-backend-service.run.app/graphql
+WP_SITEURL=https://astrowp-backend-[hash].run.app
+WORDPRESS_API_URL=https://astrowp-backend-[hash].run.app/graphql
 NETLIFY_AUTH_TOKEN=your-netlify-auth-token
 NETLIFY_SITE_ID=your-netlify-site-id
 ```

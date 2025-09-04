@@ -7,9 +7,10 @@ on:
     branches: [main]
 
 env:
-  PROJECT_ID: your-gcp-project-id
+  PROJECT_ID: astrowp-deployment
   SERVICE_NAME: astrowp-backend
   REGION: us-central1
+  DB_INSTANCE: astrowp-wordpress-db
 
 jobs:
   deploy-backend:
@@ -24,17 +25,17 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
 
       - name: Configure Docker for gcloud
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build and push Docker image
         run: |
-          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
-          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          docker build -t us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+          docker push us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ${{ env.SERVICE_NAME }} \
-            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+            --image us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }} \
             --platform managed \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
