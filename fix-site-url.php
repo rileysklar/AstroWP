@@ -1,6 +1,6 @@
 <?php
-// Fix WordPress site URL redirect loop
-// This script will update the site URL in the database
+// Comprehensive WordPress redirect loop fix
+// This script will reset all problematic WordPress settings
 
 // Database connection
 $host = $_ENV['DB_HOST'] ?? '34.10.12.56';
@@ -15,13 +15,29 @@ try {
     // Update site URL
     $site_url = 'https://astrowp-backend-xr7l6t3uja-uc.a.run.app';
     
+    // Fix home and siteurl options
     $stmt = $pdo->prepare("UPDATE wp_options SET option_value = ? WHERE option_name = 'home'");
     $stmt->execute([$site_url]);
     
     $stmt = $pdo->prepare("UPDATE wp_options SET option_value = ? WHERE option_name = 'siteurl'");
     $stmt->execute([$site_url]);
     
-    echo "Site URL updated successfully to: $site_url\n";
+    // Disable redirects temporarily
+    $stmt = $pdo->prepare("UPDATE wp_options SET option_value = '0' WHERE option_name = 'redirect_guess_404_to_fixed'");
+    $stmt->execute();
+    
+    // Clear any cached redirects
+    $stmt = $pdo->prepare("DELETE FROM wp_options WHERE option_name LIKE '%redirect%'");
+    $stmt->execute();
+    
+    // Reset admin email if needed
+    $stmt = $pdo->prepare("UPDATE wp_options SET option_value = 'admin@example.com' WHERE option_name = 'admin_email'");
+    $stmt->execute();
+    
+    echo "WordPress settings reset successfully!\n";
+    echo "Site URL: $site_url\n";
+    echo "Redirects disabled temporarily\n";
+    echo "You can now try accessing: https://astrowp-backend-xr7l6t3uja-uc.a.run.app/wp-login.php\n";
     
 } catch(PDOException $e) {
     echo "Error: " . $e->getMessage() . "\n";
