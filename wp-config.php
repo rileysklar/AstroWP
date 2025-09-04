@@ -11,6 +11,9 @@ define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
+// Database table prefix
+$table_prefix = 'wp_';
+
 // Authentication keys and salts
 define('AUTH_KEY',         $_ENV['AUTH_KEY'] ?? 'put your unique phrase here');
 define('SECURE_AUTH_KEY',  $_ENV['SECURE_AUTH_KEY'] ?? 'put your unique phrase here');
