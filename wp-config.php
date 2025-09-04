@@ -25,8 +25,8 @@ define('LOGGED_IN_SALT',   $_ENV['LOGGED_IN_SALT'] ?? 'put your unique phrase he
 define('NONCE_SALT',       $_ENV['NONCE_SALT'] ?? 'put your unique phrase here');
 
 // WordPress settings
-define('WP_DEBUG', false);
-define('WP_DEBUG_LOG', false);
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
 define('WP_DEBUG_DISPLAY', false);
 
 // Disable file editing in admin
