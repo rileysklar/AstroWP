@@ -33,6 +33,9 @@ COPY .htaccess /var/www/html/.htaccess
 # Copy fix script
 COPY fix-site-url.php /var/www/html/fix-site-url.php
 
+# Copy emergency fix script
+COPY emergency-fix.php /var/www/html/emergency-fix.php
+
 # Configure Apache for Cloud Run (listen on port 8080)
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
     && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf \
