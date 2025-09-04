@@ -1,7 +1,12 @@
 ---
+export const prerender = true;
 import MainLayout from "../../layouts/MainLayout.astro";
 import Single from "../../components/templates/Single.astro";
-import { getNodeByURI } from "../../lib/api";
+import { getNodeByURI, getAllUris } from "../../lib/api";
+
+export async function getStaticPaths() {
+    return await getAllUris();
+}
 
 const { slug } = Astro.params;
 
