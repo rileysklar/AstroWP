@@ -36,6 +36,8 @@ docker-compose up -d
 npm run dev
 ```
 
+**Note**: The `wp-content/uploads/` directory is excluded from git tracking (see `.gitignore`). WordPress will automatically create this directory and any necessary subdirectories when you upload media files through the WordPress admin.
+
 ## 🐳 WordPress Setup
 
 ### 1. Access WordPress Admin
@@ -50,8 +52,16 @@ Go to **Plugins → Add New** and install:
 3. **Advanced Custom Fields** (Custom fields)
 4. **Custom Post Type UI** (Custom post types)
 
-### Set permalink structure to Post name
-### Enable Show in GraphQL in Advanced Settings in ACF field
+### ⚠️ Important WordPress Settings
+
+**Set permalink structure to Post name:**
+- Go to **Settings → Permalinks**
+- Select **"Post name"** option
+- Click **"Save Changes"**
+
+**Enable Show in GraphQL in ACF fields:**
+- When creating ACF fields, go to **Advanced Settings**
+- Check **"Show in GraphQL"** for each field you want to expose
 
 ### 3. Create Events Custom Post Type
 Go to **Custom Post Type UI → Add/Edit Post Types**:
@@ -86,6 +96,12 @@ Go to **Custom Post Type UI → Add/Edit Post Types**:
   }
 }
 ```
+
+### 5. Media Files
+- **Uploads Directory**: WordPress automatically creates `wp-content/uploads/` when you upload your first media file
+- **Git Tracking**: Uploads are excluded from git tracking to keep the repository clean
+- **Local Development**: Each developer can have their own local media files
+- **Production**: Media files should be uploaded to your production WordPress site
 
 ## 🏗️ Project Structure
 
