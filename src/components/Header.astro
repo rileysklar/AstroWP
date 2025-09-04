@@ -15,8 +15,9 @@ try {
     };
 }
 
-const { menus, generalSettings } = navData;
+const { menus, pages, generalSettings } = navData;
 const primaryMenu = menus?.nodes?.[0] || null;
+const allPages = pages?.nodes || [];
 ---
 
 <header class="sticky relative top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -49,6 +50,14 @@ const primaryMenu = menus?.nodes?.[0] || null;
                 <a href="/events" class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors">
                     Events
                 </a>
+                {allPages.map((page) => (
+                    <a
+                        href={page.uri}
+                        class="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
+                    >
+                        {page.title}
+                    </a>
+                ))}
                 {primaryMenu && primaryMenu.menuItems?.nodes?.map((item) => (
                     <a
                         href={item.url}

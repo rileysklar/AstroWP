@@ -27,6 +27,14 @@ export async function navQuery() {
                             }
                         }
                     }
+                    pages(first: 100) {
+                        nodes {
+                            id
+                            title
+                            uri
+                            slug
+                        }
+                    }
                     generalSettings {
                         title
                         url
@@ -46,6 +54,7 @@ export async function navQuery() {
         console.error('Error fetching navigation data:', error);
         return {
             menus: { nodes: [] },
+            pages: { nodes: [] },
             generalSettings: { title: 'Site', description: '' }
         };
     }

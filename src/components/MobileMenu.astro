@@ -1,5 +1,23 @@
 ---
 // Mobile menu component for Astro
+import { navQuery } from "../lib/api";
+
+// Fetch navigation data with error handling
+let navData;
+try {
+    navData = await navQuery();
+} catch (error) {
+    console.error('Error fetching navigation data:', error);
+    navData = { 
+        menus: { nodes: [] }, 
+        pages: { nodes: [] },
+        generalSettings: { title: 'Site', description: '' } 
+    };
+}
+
+const { menus, pages, generalSettings } = navData;
+const primaryMenu = menus?.nodes?.[0] || null;
+const allPages = pages?.nodes || [];
 ---
 
 <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-background shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out">
@@ -66,6 +84,30 @@
                     <span>Events</span>
                 </div>
             </a>
+            
+            {allPages.map((page) => (
+                <a href={page.uri} class="block px-4 py-3 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-accent rounded-md transition-colors">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                        </svg>
+                        <span>{page.title}</span>
+                    </div>
+                </a>
+            ))}
+            
+            {primaryMenu && primaryMenu.menuItems?.nodes?.map((item) => (
+                <a href={item.url} class="block px-4 py-3 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-accent rounded-md transition-colors">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3h18v18H3z"/>
+                            <path d="M9 9h6v6H9z"/>
+                        </svg>
+                        <span>{item.label}</span>
+                    </div>
+                </a>
+            ))}
         </nav>
         
         <!-- Footer -->
