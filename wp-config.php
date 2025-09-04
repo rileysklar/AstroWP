@@ -33,8 +33,8 @@ define('WP_DEBUG_DISPLAY', false);
 define('DISALLOW_FILE_EDIT', true);
 
 // Set home and site URL
-define('WP_HOME', $_ENV['WP_HOME'] ?? 'https://your-frontend-domain.netlify.app');
-define('WP_SITEURL', $_ENV['WP_SITEURL'] ?? 'https://your-backend-service.run.app');
+define('WP_HOME', $_ENV['WP_HOME'] ?? 'https://astrowp-backend-xr7l6t3uja-uc.a.run.app');
+define('WP_SITEURL', $_ENV['WP_SITEURL'] ?? 'https://astrowp-backend-xr7l6t3uja-uc.a.run.app');
 
 // Allow WordPress to detect HTTPS
 define('FORCE_SSL_ADMIN', true);
