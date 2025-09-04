@@ -1,17 +1,25 @@
-# Use official WordPress image with Apache
-FROM wordpress:php8.2-apache
+# Use PHP Apache base image
+FROM php:8.2-apache
 
-# Install additional PHP extensions and dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    && docker-php-ext-install zip \
+    wget \
+    && docker-php-ext-install zip mysqli pdo pdo_mysql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /var/www/html
+
+# Download and extract WordPress
+RUN wget https://wordpress.org/latest.tar.gz \
+    && tar -xzf latest.tar.gz \
+    && mv wordpress/* . \
+    && rmdir wordpress \
+    && rm latest.tar.gz
 
 # Copy WordPress files
 COPY wp-content/ /var/www/html/wp-content/
