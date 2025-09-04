@@ -1,5 +1,5 @@
-# Use official WordPress PHP-FPM image
-FROM wordpress:php8.2-fpm
+# Use official WordPress image with Apache
+FROM wordpress:php8.2-apache
 
 # Install additional PHP extensions and dependencies
 RUN apt-get update && apt-get install -y \
@@ -23,8 +23,11 @@ COPY wp-config.php /var/www/html/wp-config.php
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Expose port
-EXPOSE 9000
+# Configure Apache for Cloud Run
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Expose port 8080 for Cloud Run
+EXPOSE 8080
+
+# Start Apache
+CMD ["apache2-foreground"]
