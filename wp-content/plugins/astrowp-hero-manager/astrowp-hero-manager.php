@@ -72,18 +72,17 @@ function astrowp_hero_manager_customize_register($wp_customize) {
         'description' => __('Main headline displayed in the hero section.', 'astrowp-hero-manager'),
     ));
 
-    // Hero Subtitle
-    $wp_customize->add_setting('hero_subtitle', array(
-        'default' => 'Starter',
-        'sanitize_callback' => 'sanitize_text_field',
+    // Hero Background Image
+    $wp_customize->add_setting('hero_background_image', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
         'transport' => 'postMessage',
     ));
-    $wp_customize->add_control('hero_subtitle', array(
-        'label' => __('Hero Subtitle', 'astrowp-hero-manager'),
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_background_image', array(
+        'label' => __('Hero Background Image', 'astrowp-hero-manager'),
         'section' => 'hero_section',
-        'type' => 'text',
-        'description' => __('Secondary headline displayed below the main title.', 'astrowp-hero-manager'),
-    ));
+        'description' => __('Upload a background image for the hero section. If no image is set, the default animated background will be used.', 'astrowp-hero-manager'),
+    )));
 
     // Hero Description
     $wp_customize->add_setting('hero_description', array(
@@ -193,9 +192,9 @@ function astrowp_hero_manager_register_graphql_types() {
                 'type' => 'String',
                 'description' => __('Hero title', 'astrowp-hero-manager'),
             ],
-            'subtitle' => [
+            'backgroundImage' => [
                 'type' => 'String',
-                'description' => __('Hero subtitle', 'astrowp-hero-manager'),
+                'description' => __('Hero background image URL', 'astrowp-hero-manager'),
             ],
             'description' => [
                 'type' => 'String',
@@ -235,7 +234,7 @@ function astrowp_hero_manager_register_graphql_types() {
         'resolve' => function() {
             return [
                 'title' => get_theme_mod('hero_title', 'Astro WordPress'),
-                'subtitle' => get_theme_mod('hero_subtitle', 'Starter'),
+                'backgroundImage' => get_theme_mod('hero_background_image', ''),
                 'description' => get_theme_mod('hero_description', 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.'),
                 'primaryButtonText' => get_theme_mod('hero_primary_button_text', 'Explore Events'),
                 'primaryButtonLink' => get_theme_mod('hero_primary_button_link', '/events'),
@@ -262,7 +261,7 @@ function astrowp_hero_manager_activate() {
     // Set default values if they don't exist
     $defaults = [
         'hero_title' => 'Astro WordPress',
-        'hero_subtitle' => 'Starter',
+        'hero_background_image' => '',
         'hero_description' => 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.',
         'hero_primary_button_text' => 'Explore Events',
         'hero_primary_button_link' => '/events',

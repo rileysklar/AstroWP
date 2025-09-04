@@ -11,7 +11,7 @@ try {
     heroData = {
         generalSettings: { title: 'AstroWP' },
         heroTitle: null,
-        heroSubtitle: null,
+        heroBackgroundImage: null,
         heroDescription: null,
         heroPrimaryButtonText: null,
         heroPrimaryButtonLink: null,
@@ -27,7 +27,7 @@ if (!heroData) {
     heroData = {
         generalSettings: { title: 'AstroWP' },
         heroTitle: null,
-        heroSubtitle: null,
+        heroBackgroundImage: null,
         heroDescription: null,
         heroPrimaryButtonText: null,
         heroPrimaryButtonLink: null,
@@ -38,11 +38,11 @@ if (!heroData) {
     };
 }
 
-const { heroTitle, heroSubtitle, heroDescription, heroPrimaryButtonText, heroPrimaryButtonLink, heroSecondaryButtonText, heroSecondaryButtonLink, heroShowSocialProof, heroSocialProofText, generalSettings } = heroData;
+const { heroTitle, heroBackgroundImage, heroDescription, heroPrimaryButtonText, heroPrimaryButtonLink, heroSecondaryButtonText, heroSecondaryButtonLink, heroShowSocialProof, heroSocialProofText, generalSettings } = heroData;
 
 // Fallback content if no hero data
 const title = heroTitle || 'Astro WordPress';
-const subtitle = heroSubtitle || 'Starter';
+const backgroundImage = heroBackgroundImage || '';
 const description = heroDescription || 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.';
 const primaryButtonText = heroPrimaryButtonText || 'Explore Events';
 const primaryButtonLink = heroPrimaryButtonLink || '/events';
@@ -53,12 +53,19 @@ const socialProofText = heroSocialProofText || 'Trusted by developers worldwide'
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-purple-950 dark:to-slate-950">
-    <!-- Animated background -->
-    <div class="absolute inset-0">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-    </div>
+    <!-- Background Image or Animated Background -->
+    {backgroundImage ? (
+        <div class="absolute inset-0">
+            <img src={backgroundImage} alt="Hero Background" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white/80 dark:from-transparent dark:via-slate-900/50 dark:to-slate-950/90"></div>
+        </div>
+    ) : (
+        <div class="absolute inset-0">
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+    )}
     
     <!-- Main content -->
     <div class="relative -top-10 z-10 max-w-6xl mx-auto px-6 text-center">
@@ -72,10 +79,6 @@ const socialProofText = heroSocialProofText || 'Trusted by developers worldwide'
             <span class="bg-gradient-to-r from-slate-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
                 {title}
             </span>
-            <br />
-            <!-- <span class="bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 dark:from-purple-200 dark:via-pink-200 dark:to-yellow-200 bg-clip-text text-transparent">
-                {subtitle}
-            </span> -->
         </h1>
       
         

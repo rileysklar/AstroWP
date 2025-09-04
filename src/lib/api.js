@@ -77,7 +77,7 @@ export async function heroQuery() {
                     }
                     heroSettings {
                         title
-                        subtitle
+                        backgroundImage
                         description
                         primaryButtonText
                         primaryButtonLink
@@ -101,7 +101,7 @@ export async function heroQuery() {
         return {
             ...data,
             heroTitle: heroData.title,
-            heroSubtitle: heroData.subtitle,
+            heroBackgroundImage: heroData.backgroundImage,
             heroDescription: heroData.description,
             heroPrimaryButtonText: heroData.primaryButtonText,
             heroPrimaryButtonLink: heroData.primaryButtonLink,
@@ -115,7 +115,7 @@ export async function heroQuery() {
         return {
             generalSettings: { title: 'AstroWP', description: '' },
             heroTitle: null,
-            heroSubtitle: null,
+            heroBackgroundImage: null,
             heroDescription: null,
             heroPrimaryButtonText: null,
             heroPrimaryButtonLink: null,
