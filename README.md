@@ -106,30 +106,99 @@ Go to **Custom Post Type UI → Add/Edit Post Types**:
 ### 6. Hero Section Management (Optional)
 To make the Hero section editable from WordPress:
 
-**Option A: ACF Options Page (Recommended)**
-1. **Install ACF Pro** (if not already installed)
-2. **Create Options Page**:
-   - Go to **Custom Fields → Add New**
-   - Set **Field Group Name**: "Hero Section"
-   - **Location Rules**: Options Page → is equal to → Hero
-3. **Add Hero Fields**:
-   - **Hero Title** (Text) - Field Name: `hero_title`
-   - **Hero Subtitle** (Text) - Field Name: `hero_subtitle`
-   - **Hero Description** (Textarea) - Field Name: `hero_description`
-   - **Primary Button Text** (Text) - Field Name: `hero_primary_button_text`
-   - **Primary Button Link** (Text) - Field Name: `hero_primary_button_link`
-   - **Secondary Button Text** (Text) - Field Name: `hero_secondary_button_text`
-   - **Secondary Button Link** (Text) - Field Name: `hero_secondary_button_link`
-   - **Show Social Proof** (True/False) - Field Name: `hero_show_social_proof`
-   - **Social Proof Text** (Text) - Field Name: `hero_social_proof_text`
-4. **Enable GraphQL**: Check "Show in GraphQL" for all fields
-5. **Create Options Page**:
-   - Go to **Custom Fields → Options Pages**
-   - Add new options page with slug: `hero`
-6. **Edit Hero Content**: Go to **Custom Fields → Hero** to edit content
+**Option A: WordPress Customizer (Recommended - No Plugins Required)**
+1. **Add Customizer Support** to your WordPress theme:
+   ```php
+   // Add to your theme's functions.php
+   function astrowp_customize_register($wp_customize) {
+       // Hero Section
+       $wp_customize->add_section('hero_section', array(
+           'title' => 'Hero Section',
+           'priority' => 30,
+       ));
+       
+       // Hero Title
+       $wp_customize->add_setting('hero_title', array('default' => 'Astro WordPress'));
+       $wp_customize->add_control('hero_title', array(
+           'label' => 'Hero Title',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Hero Subtitle
+       $wp_customize->add_setting('hero_subtitle', array('default' => 'Starter'));
+       $wp_customize->add_control('hero_subtitle', array(
+           'label' => 'Hero Subtitle',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Hero Description
+       $wp_customize->add_setting('hero_description', array('default' => 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.'));
+       $wp_customize->add_control('hero_description', array(
+           'label' => 'Hero Description',
+           'section' => 'hero_section',
+           'type' => 'textarea',
+       ));
+       
+       // Primary Button Text
+       $wp_customize->add_setting('hero_primary_button_text', array('default' => 'Explore Events'));
+       $wp_customize->add_control('hero_primary_button_text', array(
+           'label' => 'Primary Button Text',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Primary Button Link
+       $wp_customize->add_setting('hero_primary_button_link', array('default' => '/events'));
+       $wp_customize->add_control('hero_primary_button_link', array(
+           'label' => 'Primary Button Link',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Secondary Button Text
+       $wp_customize->add_setting('hero_secondary_button_text', array('default' => 'Read Posts'));
+       $wp_customize->add_control('hero_secondary_button_text', array(
+           'label' => 'Secondary Button Text',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Secondary Button Link
+       $wp_customize->add_setting('hero_secondary_button_link', array('default' => '/posts'));
+       $wp_customize->add_control('hero_secondary_button_link', array(
+           'label' => 'Secondary Button Link',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+       
+       // Show Social Proof
+       $wp_customize->add_setting('hero_show_social_proof', array('default' => '1'));
+       $wp_customize->add_control('hero_show_social_proof', array(
+           'label' => 'Show Social Proof',
+           'section' => 'hero_section',
+           'type' => 'checkbox',
+       ));
+       
+       // Social Proof Text
+       $wp_customize->add_setting('hero_social_proof_text', array('default' => 'Trusted by developers worldwide'));
+       $wp_customize->add_control('hero_social_proof_text', array(
+           'label' => 'Social Proof Text',
+           'section' => 'hero_section',
+           'type' => 'text',
+       ));
+   }
+   add_action('customize_register', 'astrowp_customize_register');
+   ```
 
-**Option B: Custom Post Type**
-Create a "Hero" custom post type with ACF fields for more complex hero management.
+2. **Edit Hero Content**: Go to **Appearance → Customize → Hero Section** to edit content
+
+**Option B: Simple Options Page**
+Create a custom admin page using WordPress Options API (no plugins required).
+
+**Option C: Custom Post Type**
+Create a "Hero" custom post type for more complex hero management.
 
 ## 🏗️ Project Structure
 

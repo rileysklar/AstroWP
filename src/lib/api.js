@@ -61,7 +61,7 @@ export async function navQuery() {
 }
 
 /**
- * Fetch Hero section content from WordPress options
+ * Fetch Hero section content from WordPress customizer options
  * @returns {Promise<Object>} Hero content data
  */
 export async function heroQuery() {
@@ -75,22 +75,16 @@ export async function heroQuery() {
                         title
                         description
                     }
-                    # Hero content from ACF options
-                    hero: acfOptionsPage(name: "hero") {
-                        heroTitle
-                        heroSubtitle
-                        heroDescription
-                        heroPrimaryButtonText
-                        heroPrimaryButtonLink
-                        heroSecondaryButtonText
-                        heroSecondaryButtonLink
-                        heroBackgroundImage {
-                            sourceUrl
-                            altText
-                        }
-                        heroShowSocialProof
-                        heroSocialProofText
-                    }
+                    # Hero content from WordPress options
+                    heroTitle: option(name: "hero_title")
+                    heroSubtitle: option(name: "hero_subtitle")
+                    heroDescription: option(name: "hero_description")
+                    heroPrimaryButtonText: option(name: "hero_primary_button_text")
+                    heroPrimaryButtonLink: option(name: "hero_primary_button_link")
+                    heroSecondaryButtonText: option(name: "hero_secondary_button_text")
+                    heroSecondaryButtonLink: option(name: "hero_secondary_button_link")
+                    heroShowSocialProof: option(name: "hero_show_social_proof")
+                    heroSocialProofText: option(name: "hero_social_proof_text")
                 }`
             })
         });
@@ -105,7 +99,15 @@ export async function heroQuery() {
         console.error('Error fetching hero data:', error);
         return {
             generalSettings: { title: 'AstroWP', description: '' },
-            hero: null
+            heroTitle: null,
+            heroSubtitle: null,
+            heroDescription: null,
+            heroPrimaryButtonText: null,
+            heroPrimaryButtonLink: null,
+            heroSecondaryButtonText: null,
+            heroSecondaryButtonLink: null,
+            heroShowSocialProof: null,
+            heroSocialProofText: null
         };
     }
 }

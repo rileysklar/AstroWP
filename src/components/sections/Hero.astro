@@ -11,18 +11,18 @@ try {
     heroData = { hero: null, generalSettings: { title: 'AstroWP' } };
 }
 
-const { hero, generalSettings } = heroData;
+const { heroTitle, heroSubtitle, heroDescription, heroPrimaryButtonText, heroPrimaryButtonLink, heroSecondaryButtonText, heroSecondaryButtonLink, heroShowSocialProof, heroSocialProofText, generalSettings } = heroData;
 
 // Fallback content if no hero data
-const title = hero?.heroTitle || 'Astro WordPress';
-const subtitle = hero?.heroSubtitle || 'Starter';
-const description = hero?.heroDescription || 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.';
-const primaryButtonText = hero?.heroPrimaryButtonText || 'Explore Events';
-const primaryButtonLink = hero?.heroPrimaryButtonLink || '/events';
-const secondaryButtonText = hero?.heroSecondaryButtonText || 'Read Posts';
-const secondaryButtonLink = hero?.heroSecondaryButtonLink || '/posts';
-const showSocialProof = hero?.heroShowSocialProof || false;
-const socialProofText = hero?.heroSocialProofText || 'Trusted by developers worldwide';
+const title = heroTitle || 'Astro WordPress';
+const subtitle = heroSubtitle || 'Starter';
+const description = heroDescription || 'Boilerplate for Astro and WordPress using WPGraphQL, shadcn/ui, and Tailwind CSS.';
+const primaryButtonText = heroPrimaryButtonText || 'Explore Events';
+const primaryButtonLink = heroPrimaryButtonLink || '/events';
+const secondaryButtonText = heroSecondaryButtonText || 'Read Posts';
+const secondaryButtonLink = heroSecondaryButtonLink || '/posts';
+const showSocialProof = heroShowSocialProof === '1' || heroShowSocialProof === true;
+const socialProofText = heroSocialProofText || 'Trusted by developers worldwide';
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-purple-950 dark:to-slate-950">
