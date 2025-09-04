@@ -86,6 +86,14 @@ export async function heroQuery() {
                         showSocialProof
                         socialProofText
                     }
+                    contactSettings {
+                        address
+                        city
+                        state
+                        zip
+                        phone
+                        email
+                    }
                 }`
             })
         });
@@ -98,6 +106,7 @@ export async function heroQuery() {
         
         // Map heroSettings to the expected format
         const heroData = data.heroSettings || {};
+        const contactData = data.contactSettings || {};
         return {
             ...data,
             heroTitle: heroData.title,
@@ -108,7 +117,13 @@ export async function heroQuery() {
             heroSecondaryButtonText: heroData.secondaryButtonText,
             heroSecondaryButtonLink: heroData.secondaryButtonLink,
             heroShowSocialProof: heroData.showSocialProof,
-            heroSocialProofText: heroData.socialProofText
+            heroSocialProofText: heroData.socialProofText,
+            contactAddress: contactData.address,
+            contactCity: contactData.city,
+            contactState: contactData.state,
+            contactZip: contactData.zip,
+            contactPhone: contactData.phone,
+            contactEmail: contactData.email
         };
     } catch (error) {
         console.error('Error fetching hero data:', error);
@@ -122,7 +137,13 @@ export async function heroQuery() {
             heroSecondaryButtonText: null,
             heroSecondaryButtonLink: null,
             heroShowSocialProof: null,
-            heroSocialProofText: null
+            heroSocialProofText: null,
+            contactAddress: null,
+            contactCity: null,
+            contactState: null,
+            contactZip: null,
+            contactPhone: null,
+            contactEmail: null
         };
     }
 }

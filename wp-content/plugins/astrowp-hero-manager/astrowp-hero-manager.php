@@ -174,6 +174,91 @@ function astrowp_hero_manager_customize_register($wp_customize) {
         'type' => 'text',
         'description' => __('Text displayed as social proof (e.g., testimonials, user count).', 'astrowp-hero-manager'),
     ));
+
+    // Contact Information Section
+    $wp_customize->add_section('contact_section', array(
+        'title' => __('Contact Information', 'astrowp-hero-manager'),
+        'priority' => 35,
+        'description' => __('Configure contact information displayed in the footer.', 'astrowp-hero-manager'),
+    ));
+
+    // Address
+    $wp_customize->add_setting('contact_address', array(
+        'default' => '123 Main Street',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_address', array(
+        'label' => __('Address', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'text',
+        'description' => __('Street address for contact information.', 'astrowp-hero-manager'),
+    ));
+
+    // City
+    $wp_customize->add_setting('contact_city', array(
+        'default' => 'City',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_city', array(
+        'label' => __('City', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'text',
+        'description' => __('City name for contact information.', 'astrowp-hero-manager'),
+    ));
+
+    // State
+    $wp_customize->add_setting('contact_state', array(
+        'default' => 'State',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_state', array(
+        'label' => __('State', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'text',
+        'description' => __('State or province for contact information.', 'astrowp-hero-manager'),
+    ));
+
+    // ZIP Code
+    $wp_customize->add_setting('contact_zip', array(
+        'default' => '12345',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_zip', array(
+        'label' => __('ZIP Code', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'text',
+        'description' => __('ZIP or postal code for contact information.', 'astrowp-hero-manager'),
+    ));
+
+    // Phone
+    $wp_customize->add_setting('contact_phone', array(
+        'default' => '+1 (555) 123-4567',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_phone', array(
+        'label' => __('Phone Number', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'text',
+        'description' => __('Phone number for contact information.', 'astrowp-hero-manager'),
+    ));
+
+    // Email
+    $wp_customize->add_setting('contact_email', array(
+        'default' => 'hello@astrowp.com',
+        'sanitize_callback' => 'sanitize_email',
+        'transport' => 'postMessage',
+    ));
+    $wp_customize->add_control('contact_email', array(
+        'label' => __('Email Address', 'astrowp-hero-manager'),
+        'section' => 'contact_section',
+        'type' => 'email',
+        'description' => __('Email address for contact information.', 'astrowp-hero-manager'),
+    ));
 }
 
 /**
@@ -227,6 +312,37 @@ function astrowp_hero_manager_register_graphql_types() {
         ],
     ]);
 
+    // Register Contact Settings object type
+    register_graphql_object_type('ContactSettings', [
+        'description' => __('Contact information settings from WordPress Customizer', 'astrowp-hero-manager'),
+        'fields' => [
+            'address' => [
+                'type' => 'String',
+                'description' => __('Contact address', 'astrowp-hero-manager'),
+            ],
+            'city' => [
+                'type' => 'String',
+                'description' => __('Contact city', 'astrowp-hero-manager'),
+            ],
+            'state' => [
+                'type' => 'String',
+                'description' => __('Contact state', 'astrowp-hero-manager'),
+            ],
+            'zip' => [
+                'type' => 'String',
+                'description' => __('Contact ZIP code', 'astrowp-hero-manager'),
+            ],
+            'phone' => [
+                'type' => 'String',
+                'description' => __('Contact phone number', 'astrowp-hero-manager'),
+            ],
+            'email' => [
+                'type' => 'String',
+                'description' => __('Contact email address', 'astrowp-hero-manager'),
+            ],
+        ],
+    ]);
+
     // Register heroSettings field on RootQuery
     register_graphql_field('RootQuery', 'heroSettings', [
         'type' => 'HeroSettings',
@@ -242,6 +358,22 @@ function astrowp_hero_manager_register_graphql_types() {
                 'secondaryButtonLink' => get_theme_mod('hero_secondary_button_link', '/posts'),
                 'showSocialProof' => get_theme_mod('hero_show_social_proof', '1') === '1',
                 'socialProofText' => get_theme_mod('hero_social_proof_text', 'Trusted by developers worldwide'),
+            ];
+        }
+    ]);
+
+    // Register contactSettings field on RootQuery
+    register_graphql_field('RootQuery', 'contactSettings', [
+        'type' => 'ContactSettings',
+        'description' => __('Contact information settings', 'astrowp-hero-manager'),
+        'resolve' => function() {
+            return [
+                'address' => get_theme_mod('contact_address', '123 Main Street'),
+                'city' => get_theme_mod('contact_city', 'City'),
+                'state' => get_theme_mod('contact_state', 'State'),
+                'zip' => get_theme_mod('contact_zip', '12345'),
+                'phone' => get_theme_mod('contact_phone', '+1 (555) 123-4567'),
+                'email' => get_theme_mod('contact_email', 'hello@astrowp.com'),
             ];
         }
     ]);
@@ -269,6 +401,12 @@ function astrowp_hero_manager_activate() {
         'hero_secondary_button_link' => '/posts',
         'hero_show_social_proof' => '1',
         'hero_social_proof_text' => 'Trusted by developers worldwide',
+        'contact_address' => '123 Main Street',
+        'contact_city' => 'City',
+        'contact_state' => 'State',
+        'contact_zip' => '12345',
+        'contact_phone' => '+1 (555) 123-4567',
+        'contact_email' => 'hello@astrowp.com',
     ];
 
     foreach ($defaults as $key => $value) {

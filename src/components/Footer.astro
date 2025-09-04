@@ -1,11 +1,42 @@
 ---
 // Footer component with navigation, social links, and site info
+import { navQuery, heroQuery } from "../lib/api";
+
+let navData;
+try {
+    navData = await navQuery();
+} catch (error) {
+    console.error('Error fetching navigation data:', error);
+    navData = { menus: { nodes: [] }, generalSettings: { title: 'Site', description: '' } };
+}
+
+let contactData;
+try {
+    contactData = await heroQuery();
+} catch (error) {
+    console.error('Error fetching contact data:', error);
+    contactData = {
+        contactAddress: null,
+        contactCity: null,
+        contactState: null,
+        contactZip: null,
+        contactPhone: null,
+        contactEmail: null
+    };
+}
+
+const { menus, pages, generalSettings } = navData;
+const primaryMenu = menus?.nodes?.[0] || null;
+const allPages = pages?.nodes || [];
+
+// Extract contact information
+const { contactAddress, contactCity, contactState, contactZip, contactPhone, contactEmail } = contactData;
 ---
 
 <footer class="bg-background border-t border-border/40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
             <!-- Brand Section -->
             <div class="lg:col-span-1">
@@ -15,10 +46,10 @@
                         <path d="M2 17l10 5 10-5"/>
                         <path d="M2 12l10 5 10-5"/>
                     </svg>
-                    <span class="text-xl font-bold text-foreground">AstroWP</span>
+                    <span class="text-xl font-bold text-foreground"> {generalSettings?.title || 'AstroWP'}</span>
                 </div>
                 <p class="text-muted-foreground mb-6 leading-relaxed">
-                    A modern headless WordPress solution built with Astro. Fast, secure, and developer-friendly.
+                    {generalSettings?.description || 'A modern headless WordPress solution built with Astro. Fast, secure, and developer-friendly.'}
                 </p>
                 
                 <!-- Social Links -->
@@ -63,7 +94,7 @@
                 </ul>
             </div>
 
-            <!-- Resources -->
+            <!-- Resources 
             <div>
                 <h3 class="text-lg font-semibold mb-4">Resources</h3>
                 <ul class="space-y-2">
@@ -83,7 +114,7 @@
                         <a href="/community" class="text-slate-300 hover:text-green-500 transition-colors">Community</a>
                     </li>
                 </ul>
-            </div>
+            </div>-->
 
             <!-- Contact Info -->
             <div>
@@ -95,22 +126,22 @@
                             <circle cx="12" cy="10" r="3"/>
                         </svg>
                         <div>
-                            <p class="text-slate-300">123 Main Street</p>
-                            <p class="text-slate-300">City, State 12345</p>
+                            <p class="text-slate-300">{contactAddress || '123 Main Street'}</p>
+                            <p class="text-slate-300">{contactCity || 'City'}, {contactState || 'State'} {contactZip || '12345'}</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
-                        <span class="text-slate-300">+1 (555) 123-4567</span>
+                        <span class="text-slate-300">{contactPhone || '+1 (555) 123-4567'}</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
-                        <span class="text-slate-300">hello@astrowp.com</span>
+                        <span class="text-slate-300">{contactEmail || 'hello@astrowp.com'}</span>
                     </div>
                 </div>
             </div>
@@ -120,12 +151,12 @@
         <div class="border-t border-slate-700 mt-12 pt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="text-slate-400 text-sm mb-4 md:mb-0">
-                    © 2025 AstroWP. All rights reserved.
+                    © {new Date().getFullYear()} {generalSettings?.title || 'AstroWP'}. All rights reserved.
                 </div>
                 <div class="flex space-x-6 text-sm">
-                    <a href="/privacy" class="text-slate-400 hover:text-green-500 transition-colors">Privacy Policy</a>
-                    <a href="/terms" class="text-slate-400 hover:text-green-500 transition-colors">Terms of Service</a>
-                    <a href="/cookies" class="text-slate-400 hover:text-green-500 transition-colors">Cookie Policy</a>
+                    <!-- <a href="/privacy" class="text-slate-400 hover:text-green-500 transition-colors">{generalSettings?.privacyPolicy || 'Privacy Policy'}</a>
+                    <a href="/terms" class="text-slate-400 hover:text-green-500 transition-colors">{generalSettings?.termsOfService || 'Terms of Service'}</a>
+                    <a href="/cookies" class="text-slate-400 hover:text-green-500 transition-colors">{generalSettings?.cookiePolicy || 'Cookie Policy'}</a> -->
                 </div>
             </div>
         </div>
