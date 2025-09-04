@@ -88,12 +88,14 @@ const { node, type } = Astro.props;
             </div>
             
             <div class="flex items-center gap-4">
-                <a 
-                    href={`/${type.toLowerCase()}s`} 
-                    class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                    ← Back to {type === 'Post' ? 'Posts' : 'Events'}
-                </a>
+                {type !== 'Page' && (
+                    <a 
+                        href={`/${type.toLowerCase()}s`} 
+                        class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                        ← Back to {type === 'Post' ? 'Posts' : 'Events'}
+                    </a>
+                )}
             </div>
         </div>
     </footer>

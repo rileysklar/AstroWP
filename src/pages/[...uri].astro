@@ -27,30 +27,37 @@ export async function getStaticPaths(){
 
 function resolveContentTemplate(node){ 
     let template;
+    let type;
     switch(node.__typename){
         case 'Post':
             template = Single;
+            type = 'Post';
             break; 
         case 'Page':
             template = Single;
+            type = 'Page';
             break; 
         case 'Event':
             template = Single;
+            type = 'Event';
             break;
         case 'Category':
             template = Archive;
+            type = 'Category';
             break; 
         case 'Tag':
             template = Archive;
+            type = 'Tag';
             break; 
         default: 
             template = Single;
+            type = 'Post';
     }
 
-    return template;
+    return { template, type };
 }
 
-const Template = resolveContentTemplate(node)
+const { template: Template, type } = resolveContentTemplate(node)
 
 ---
 
@@ -58,5 +65,5 @@ const Template = resolveContentTemplate(node)
  title={ node.title || node.name}
  description={ node.excerpt || node.content }
 >
-        <Template node={node}></Template>
+        <Template node={node} type={type} posts={node.posts?.nodes || []}></Template>
 </MainLayout>

@@ -50,6 +50,9 @@ Go to **Plugins → Add New** and install:
 3. **Advanced Custom Fields** (Custom fields)
 4. **Custom Post Type UI** (Custom post types)
 
+### Set permalink structure to Post name
+### Enable Show in GraphQL in Advanced Settings in ACF field
+
 ### 3. Create Events Custom Post Type
 Go to **Custom Post Type UI → Add/Edit Post Types**:
 

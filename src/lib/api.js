@@ -205,7 +205,6 @@ export async function getNodeByURI(uri) {
                             title
                             date
                             uri
-                            excerpt
                             content
                             slug
                             featuredImage {
@@ -226,6 +225,17 @@ export async function getNodeByURI(uri) {
                             uri
                             date
                             content
+                            featuredImage {
+                                node {
+                                    srcSet
+                                    sourceUrl
+                                    altText
+                                    mediaDetails {
+                                        height
+                                        width
+                                    }
+                                }
+                            }
                         }
                         ... on Category {
                             id
@@ -269,7 +279,9 @@ export async function getNodeByURI(uri) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const { data } = await response.json();
+        const result = await response.json();
+        
+        const { data } = result;
         return data;
     } catch (error) {
         console.error('Error fetching node by URI:', error);
