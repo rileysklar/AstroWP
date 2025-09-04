@@ -46,14 +46,15 @@ jobs:
           docker build -t us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }} .
           docker push us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }}
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy ${{ env.SERVICE_NAME }} \
-            --image us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }} \
-            --platform managed \
-            --region ${{ env.REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOST=${{ secrets.DB_HOST }},WP_HOME=${{ secrets.WP_HOME }},WP_SITEURL=${{ secrets.WP_SITEURL }}"
+                   - name: Deploy to Cloud Run
+               run: |
+                 gcloud run deploy ${{ env.SERVICE_NAME }} \
+                   --image us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/astrowp-repo/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+                   --platform managed \
+                   --region ${{ env.REGION }} \
+                   --allow-unauthenticated \
+                   --service-account astrowp-deploy@astrowp-deployment.iam.gserviceaccount.com \
+                   --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOST=${{ secrets.DB_HOST }},WP_HOME=${{ secrets.WP_HOME }},WP_SITEURL=${{ secrets.WP_SITEURL }}"
 
   deploy-frontend:
     runs-on: ubuntu-latest
