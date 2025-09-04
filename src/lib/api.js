@@ -61,9 +61,54 @@ export async function navQuery() {
 }
 
 /**
- * Fetch recent posts for the home page
- * @returns {Promise<Object>} Posts data
+ * Fetch Hero section content from WordPress options
+ * @returns {Promise<Object>} Hero content data
  */
+export async function heroQuery() {
+    try {
+        const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                query: `{
+                    generalSettings {
+                        title
+                        description
+                    }
+                    # Hero content from ACF options
+                    hero: acfOptionsPage(name: "hero") {
+                        heroTitle
+                        heroSubtitle
+                        heroDescription
+                        heroPrimaryButtonText
+                        heroPrimaryButtonLink
+                        heroSecondaryButtonText
+                        heroSecondaryButtonLink
+                        heroBackgroundImage {
+                            sourceUrl
+                            altText
+                        }
+                        heroShowSocialProof
+                        heroSocialProofText
+                    }
+                }`
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const { data } = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching hero data:', error);
+        return {
+            generalSettings: { title: 'AstroWP', description: '' },
+            hero: null
+        };
+    }
+}
 export async function homePagePostsQuery() {
     try {
         const response = await fetch(import.meta.env.WORDPRESS_API_URL, {

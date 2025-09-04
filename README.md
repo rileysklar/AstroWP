@@ -103,6 +103,34 @@ Go to **Custom Post Type UI → Add/Edit Post Types**:
 - **Local Development**: Each developer can have their own local media files
 - **Production**: Media files should be uploaded to your production WordPress site
 
+### 6. Hero Section Management (Optional)
+To make the Hero section editable from WordPress:
+
+**Option A: ACF Options Page (Recommended)**
+1. **Install ACF Pro** (if not already installed)
+2. **Create Options Page**:
+   - Go to **Custom Fields → Add New**
+   - Set **Field Group Name**: "Hero Section"
+   - **Location Rules**: Options Page → is equal to → Hero
+3. **Add Hero Fields**:
+   - **Hero Title** (Text) - Field Name: `hero_title`
+   - **Hero Subtitle** (Text) - Field Name: `hero_subtitle`
+   - **Hero Description** (Textarea) - Field Name: `hero_description`
+   - **Primary Button Text** (Text) - Field Name: `hero_primary_button_text`
+   - **Primary Button Link** (Text) - Field Name: `hero_primary_button_link`
+   - **Secondary Button Text** (Text) - Field Name: `hero_secondary_button_text`
+   - **Secondary Button Link** (Text) - Field Name: `hero_secondary_button_link`
+   - **Show Social Proof** (True/False) - Field Name: `hero_show_social_proof`
+   - **Social Proof Text** (Text) - Field Name: `hero_social_proof_text`
+4. **Enable GraphQL**: Check "Show in GraphQL" for all fields
+5. **Create Options Page**:
+   - Go to **Custom Fields → Options Pages**
+   - Add new options page with slug: `hero`
+6. **Edit Hero Content**: Go to **Custom Fields → Hero** to edit content
+
+**Option B: Custom Post Type**
+Create a "Hero" custom post type with ACF fields for more complex hero management.
+
 ## 🏗️ Project Structure
 
 ```
